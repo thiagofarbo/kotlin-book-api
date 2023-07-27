@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/book
+    username: admin
+    password: admin
+    jpa:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      driver-class-name: org.postgresql.Driver
+      hibernate:
+        ddl-auto: update
+      properties:
+        hibernate.default_schema: book
+
+# Flyway Configuration
+  flyway:
+    enabled: true
+    baselineOnMigrate: true
+    locations: classpath:/db/migration
+    check-location: false

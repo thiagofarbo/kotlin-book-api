@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  book-api:
+    container_name: book-api
+    image: thiago1432/book-api:v1
+    networks:
+      - book-net
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    links:
+      - db
+
+  db:
+    image: postgres
+    restart: always
+    container_name: db-book-api
+    volumes:
+      - data:/var/lib/postgresql/db
+    networks:
+      - book-net
+    environment:
+      POSTGRES_DB: book
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - '5432:5432'
+
+volumes:
+  data:
+    external: false
+networks:
+  book-net:
+    driver: bridge
