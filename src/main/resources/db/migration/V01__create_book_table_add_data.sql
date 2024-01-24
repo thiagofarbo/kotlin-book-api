@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS book (
     synopsis VARCHAR(255) NOT NULL,
     price DOUBLE PRECISION NOT NULL,
     available BOOLEAN NOT NULL,
+
     CONSTRAINT pk_book_id PRIMARY KEY (id)
 );
 
@@ -53,6 +54,32 @@ CREATE TABLE IF NOT EXISTS rental (
     cpf VARCHAR(15) NOT NULL,
     FOREIGN KEY (renter_id) REFERENCES renter (id),
     FOREIGN KEY (book_id) REFERENCES book (id)
+);
+
+CREATE SEQUENCE IF NOT exists sq_warehouse
+  INCREMENT 1
+  START 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  CACHE 1;
+
+CREATE TABLE warehouse_books (
+    book_id SERIAL PRIMARY KEY,
+    in_stock BOOLEAN DEFAULT true,
+    quantity_in_stock INT DEFAULT 0,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    isbn VARCHAR(20) NOT NULL,
+    publication_year INTEGER NOT NULL,
+    publisher VARCHAR(255) NOT NULL,
+    number_of_pages INTEGER NOT NULL,
+    genre VARCHAR(100) NOT NULL,
+    language VARCHAR(50) NOT NULL,
+    synopsis VARCHAR(255) NOT NULL,
+    price DOUBLE PRECISION NOT NULL,
+    available BOOLEAN NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO book (title, author, isbn, publication_year, publisher, number_of_pages, genre, language, synopsis, price, available)

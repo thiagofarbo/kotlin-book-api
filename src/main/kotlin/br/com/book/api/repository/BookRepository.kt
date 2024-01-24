@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository
 import java.util.Optional
 
 @Repository
-interface bookRepository: CrudRepository<Book, Long>{
+interface BookRepository: CrudRepository<Book, Long>{
 
     fun findBookByIsbn(isbn:String): Optional<Book>
 

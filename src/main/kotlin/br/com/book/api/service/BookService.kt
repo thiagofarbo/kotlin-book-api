@@ -20,9 +20,9 @@ interface BookService{
 
     suspend fun findBookInWareHouse(isbn: String): List<Book>
 
-    fun rentBook(isbn: String, cpf:String, returnDate: LocalDate)
+    fun rentBook(isbn: String, cpf:String, returnDate: LocalDate): Rental
 
-    fun returnBook(isbn: String, cpf:String, returnDate: LocalDate)
+    fun returnBook(title: String, cpf:String, returnDate: LocalDate)
 
     fun listRentals(cpf: String): List<Rental>
 

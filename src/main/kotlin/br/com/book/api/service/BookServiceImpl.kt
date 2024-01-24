@@ -5,16 +5,17 @@ import br.com.book.api.domain.enums.StatusEnum
 import br.com.book.api.exception.BookException
 import br.com.book.api.repository.RentalRepository
 import br.com.book.api.repository.RenterRepository
-import br.com.book.api.repository.bookRepository
+import br.com.book.api.repository.BookRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import java.util.stream.Collectors
 
 @Service
 class BookServiceImpl (
 
-    private val bookRepository: bookRepository,
+    private val bookRepository: BookRepository,
 
     private val renterRepository: RenterRepository,
 
@@ -45,16 +46,18 @@ class BookServiceImpl (
         TODO("Not yet implemented")
     }
 
-    override fun rentBook(isbn: String, cpf: String, returnDate: LocalDate) {
+    override fun rentBook(isbn: String, cpf: String, returnDate: LocalDate): Rental {
 
         val book = bookRepository.findBookByIsbn(isbn).orElseThrow( { BookException("Book not found.") } )
             book.available = false
 
-        val renter = renterRepository.findRenterByCpf(cpf)
+        val renter = renterRepository.findRenterByCpf(cpf).orElseThrow( { BookException("Renter not found.") } )
 
         val rental = Rental(null, book, renter, LocalDate.now(), returnDate, StatusEnum.RENTED.name, cpf)
 
-        rentalRepository.save(rental)
+        val rentedBook = rentalRepository.save(rental)
+
+        return rentedBook
     }
 
     override fun returnBook(title: String, cpf: String, returnDate: LocalDate) {

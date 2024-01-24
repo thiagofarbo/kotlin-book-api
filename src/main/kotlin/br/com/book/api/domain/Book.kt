@@ -32,7 +32,7 @@ data class Book (@Id
 
     override fun toString(): String {
         return buildString {
-            appendln("Book(id=$id, title='$title', author='$author', isbn='$isbn', publicationYear=$publicationYear, publisher='$publisher', numberOfPages=$numberOfPages, genre='$genre', language='$language', price=$price, synopsis='$synopsis', available=$available)")
+            appendln("Book(title='$title', author='$author', isbn='$isbn', publicationYear=$publicationYear, publisher='$publisher', numberOfPages=$numberOfPages, genre='$genre', language='$language', price=$price, synopsis='$synopsis', available=$available)")
         }
     }
 }

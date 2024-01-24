@@ -1,6 +1,5 @@
 package br.com.book.api.domain
 
-import br.com.book.api.domain.enums.StatusEnum
 import java.io.Serializable
 import java.time.LocalDate
 import javax.persistence.*
@@ -34,9 +33,8 @@ data class Rental (
     )
 
     override fun toString(): String {
-        return buildString {
-            appendln("Rental(id=$id, book=${book.title}, renter=${renter.name}, rentalDate=$rentalDate, returnDate=$returnDate, status=$status, cpf=$cpf)")
-        }
+        return "Rental(id=$id, book=$book, renter=$renter, rentalDate=$rentalDate, returnDate=$returnDate, status='$status', cpf='$cpf')"
     }
+
 
 }

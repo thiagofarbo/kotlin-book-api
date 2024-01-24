@@ -1,26 +1,25 @@
 package br.com.book.api.controller
 
+import br.com.book.api.context.CallStrategy
 import br.com.book.api.domain.Book
+import br.com.book.api.domain.enums.CallTypeEnum
+import br.com.book.api.domain.order.OrderRequest
+import br.com.book.api.domain.order.OrderResponse
 import br.com.book.api.service.BookService
 import br.com.book.api.util.PageRequestBuilder
 import kotlinx.coroutines.runBlocking
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
 
 @RestController
-@RequestMapping("/v1/books")
+@RequestMapping("/v1/api/books")
 class BookController(
+
+    private val callService: CallStrategy,
+
     private val bookService: BookService
 ) {
 
@@ -52,9 +51,9 @@ class BookController(
     }
 
     @PostMapping("/{isbn}/rents")
-    fun rent(@PathVariable isbn: String, @RequestParam cpf:String, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) returnDate:LocalDate): ResponseEntity<Void> {
-        bookService.rentBook(isbn, cpf, returnDate)
-        return ResponseEntity.noContent().build()
+    fun rent(@PathVariable isbn: String, @RequestParam cpf:String, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) returnDate:LocalDate): ResponseEntity<OrderResponse> {
+        val orderRequest = OrderRequest(isbn, cpf, CallTypeEnum.RENT, returnDate)
+        return ResponseEntity.ok(callService.createOrder(orderRequest))
     }
 
     @PostMapping("/returns")
