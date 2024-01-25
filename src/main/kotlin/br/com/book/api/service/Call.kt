@@ -4,16 +4,21 @@ import br.com.book.api.context.CallStrategy
 import br.com.book.api.domain.enums.CallTypeEnum
 import br.com.book.api.domain.order.OrderRequest
 import br.com.book.api.domain.order.OrderResponse
+import br.com.book.api.service.message.KafkaService
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
 class Call (
-    private val bookService: BookService
+    private val bookService: BookService,
+
+    private val kafkaService: KafkaService
 
 ): CallStrategy{
 
     lateinit var order: OrderResponse
+
     override fun createOrder(orderRequest: OrderRequest): OrderResponse {
 
         val callType = CallTypeEnum.getCallTypeByEnum(orderRequest.callType)
@@ -29,6 +34,8 @@ class Call (
             }
 
             order = OrderResponse("", "", rentBook.book, rentBook.renter, rentBook.rentalDate, returnDate)
+
+            kafkaService.sendToKafkaJson(order)
 
 
         }else if (orderRequest.callType.equals(CallTypeEnum.BUY.description)){

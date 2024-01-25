@@ -3,6 +3,7 @@ import br.com.book.api.domain.Book
 import br.com.book.api.domain.Rental
 import br.com.book.api.domain.enums.StatusEnum
 import br.com.book.api.exception.BookException
+import br.com.book.api.exception.RentalException
 import br.com.book.api.repository.RentalRepository
 import br.com.book.api.repository.RenterRepository
 import br.com.book.api.repository.BookRepository
@@ -50,6 +51,12 @@ class BookServiceImpl (
 
         val book = bookRepository.findBookByIsbn(isbn).orElseThrow( { BookException("Book not found.") } )
             book.available = false
+
+        val isRental = rentalRepository.findAllByCpf(cpf).any { rental -> rental.book.id == book.id }
+
+        if(isRental){
+            throw RentalException("Book already rented", book.id.toString())
+        }
 
         val renter = renterRepository.findRenterByCpf(cpf).orElseThrow( { BookException("Renter not found.") } )
 

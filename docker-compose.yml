@@ -32,7 +32,7 @@ services:
     image: wurstmeister/zookeeper
     container_name: zookeeper
     networks:
-      - sicredi-net
+      - book-net
     ports:
       - "2181:2181"
 
