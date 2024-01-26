@@ -1,15 +1,17 @@
-![image](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/43a8d5f5-e6ce-4961-b3a8-279f257c85c6)
-
-
 # About this project
 This application aims to purchase and rent books.
 
 
 ## Prerequisites
   * Kotlin
-  * Maven
+  * SpringBoot
+  * Maven 3
+  * Docker
+  * Docker compose
+  * Postgres
+  * Redis
+  * Flyway
   * Kafka
-  * Docker 
 
 # Database.
 We are using Postgrtes as our database running in a Docker container
