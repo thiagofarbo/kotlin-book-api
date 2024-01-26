@@ -1,3 +1,7 @@
+![alt text](http://url/to/img.png)
+
+
+
 # About this project
 This application aims to purchase and rent books.
 
