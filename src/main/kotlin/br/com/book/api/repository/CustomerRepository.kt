@@ -1,13 +1,13 @@
 package br.com.book.api.repository
 
-import br.com.book.api.domain.Renter
+import br.com.book.api.domain.Customer
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface RenterRepository: CrudRepository<Renter, Long>{
+interface CustomerRepository: CrudRepository<Customer, Long>{
 
-    fun findRenterByCpf(cpf: String): Optional<Renter>
+    fun findCustomerByCpf(cpf: String): Optional<Customer>
 
 }

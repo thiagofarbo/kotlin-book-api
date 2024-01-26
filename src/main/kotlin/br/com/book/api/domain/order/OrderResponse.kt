@@ -1,7 +1,8 @@
 package br.com.book.api.domain.order
 
 import br.com.book.api.domain.Book
-import br.com.book.api.domain.Renter
+import br.com.book.api.domain.Customer
+import br.com.book.api.domain.enums.OrderTypeEnum
 import lombok.Builder
 import lombok.Getter
 import lombok.Setter
@@ -14,26 +15,29 @@ data class OrderResponse(
 
     val orderId: String?,
 
-    val callType: String,
+    val callType: OrderTypeEnum,
 
     val book: Book,
 
-    var renter: Renter,
+    var customer: Customer,
 
-    val rentalDate: LocalDate,
+    val orderDate: LocalDate,
 
-    val returnDate: LocalDate,
+    val returnDate: LocalDate?,
+
+    val quantity : Int?,
 ){
     constructor(
-        callType: String,
+        callType: OrderTypeEnum,
         book: Book,
-        renter: Renter,
-        rentalDate: LocalDate,
-        returnDate: LocalDate
-    ) : this(null, callType, book, renter, rentalDate, returnDate)
+        customer: Customer,
+        orderDate: LocalDate,
+        returnDate: LocalDate,
+        quantity: Int
+    ) : this(null, callType, book, customer, orderDate, returnDate, quantity)
 
     override fun toString(): String {
-        return "OrderResponse(orderId=$orderId, callType='$callType', book=$book, renter=$renter, rentalDate=$rentalDate, returnDate=$returnDate)"
+        return "OrderResponse(orderId=$orderId, callType='$callType', book=$book, customer=$customer, orderDate=$orderDate, returnDate=$returnDate, quantity=$quantity)"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -43,9 +47,10 @@ data class OrderResponse(
         if (orderId != other.orderId) return false
         if (callType != other.callType) return false
         if (book != other.book) return false
-        if (renter != other.renter) return false
-        if (rentalDate != other.rentalDate) return false
+        if (customer != other.customer) return false
+        if (orderDate != other.orderDate) return false
         if (returnDate != other.returnDate) return false
+        if (quantity != other.quantity) return false
 
         return true
     }
@@ -54,9 +59,10 @@ data class OrderResponse(
         var result = orderId?.hashCode() ?: 0
         result = 31 * result + callType.hashCode()
         result = 31 * result + book.hashCode()
-        result = 31 * result + renter.hashCode()
-        result = 31 * result + rentalDate.hashCode()
+        result = 31 * result + customer.hashCode()
+        result = 31 * result + orderDate.hashCode()
         result = 31 * result + returnDate.hashCode()
+        result = 31 * result + quantity.hashCode()
         return result
     }
 }

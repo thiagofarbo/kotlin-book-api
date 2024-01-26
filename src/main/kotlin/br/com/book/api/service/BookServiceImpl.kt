@@ -1,26 +1,29 @@
 package br.com.book.api.service
 import br.com.book.api.domain.Book
-import br.com.book.api.domain.Rental
+import br.com.book.api.domain.Order
+import br.com.book.api.domain.enums.OrderTypeEnum
 import br.com.book.api.domain.enums.StatusEnum
 import br.com.book.api.exception.BookException
-import br.com.book.api.exception.RentalException
-import br.com.book.api.repository.RentalRepository
-import br.com.book.api.repository.RenterRepository
+import br.com.book.api.exception.OrderException
+import br.com.book.api.repository.OrderRepository
+import br.com.book.api.repository.CustomerRepository
 import br.com.book.api.repository.BookRepository
+import br.com.book.api.service.orderNumber.GenerateOrder
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.time.LocalDate
-import java.util.stream.Collectors
 
 @Service
 class BookServiceImpl (
 
     private val bookRepository: BookRepository,
 
-    private val renterRepository: RenterRepository,
+    private val customerRepository: CustomerRepository,
 
-    private val rentalRepository: RentalRepository
+    private val orderRepository: OrderRepository,
+
+    private val orderService: OrderService
 
 ): BookService{
     override fun save(book: Book): Book {
@@ -43,47 +46,61 @@ class BookServiceImpl (
        return bookRepository.findBookByTitle(title)
     }
 
-    override suspend fun findBookInWareHouse(isbn: String): List<Book> {
+    override  fun findBookInWareHouse(isbn: String): List<Book> {
         TODO("Not yet implemented")
     }
 
-    override fun rentBook(isbn: String, cpf: String, returnDate: LocalDate): Rental {
+    override fun rentBook(isbn: String, cpf: String, returnDate: LocalDate): Order {
 
         val book = bookRepository.findBookByIsbn(isbn).orElseThrow( { BookException("Book not found.") } )
             book.available = false
 
-        val isRental = rentalRepository.findAllByCpf(cpf).any { rental -> rental.book.id == book.id }
+        val isOrdered = orderRepository.findAllByCpf(cpf).any { order -> order.book.id == book.id }
 
-        if(isRental){
-            throw RentalException("Book already rented", book.id.toString())
+        if(isOrdered){
+            throw OrderException("Book already rented", book.id.toString())
         }
 
-        val renter = renterRepository.findRenterByCpf(cpf).orElseThrow( { BookException("Renter not found.") } )
+        val customer = customerRepository.findCustomerByCpf(cpf).orElseThrow( { BookException("User not found.") } )
 
-        val rental = Rental(null, book, renter, LocalDate.now(), returnDate, StatusEnum.RENTED.name, cpf)
+        val order = Order(orderService.getOrderNumber(), book, customer, LocalDate.now(), returnDate, StatusEnum.RENTED.name, cpf, OrderTypeEnum.RENT.name, null)
 
-        val rentedBook = rentalRepository.save(rental)
+        val rentedBook = orderRepository.save(order)
 
         return rentedBook
     }
 
     override fun returnBook(title: String, cpf: String, returnDate: LocalDate) {
 
-        val listRentals = listRentals(cpf)
+        val listOrders = listOrders(cpf)
 
-        val rental = listRentals.stream()
+        val order = listOrders.stream()
             .filter { r -> r.book.title.equals(title) }
-            .findFirst().orElseThrow( { BookException("Rental not found") } )
+            .findFirst().orElseThrow( { BookException("Order not found") } )
 
-        rental.status = "RETURNED"
-        rentalRepository.save(rental)
+        order.status = "RETURNED"
+        orderRepository.save(order)
 
-        val book = bookRepository.findById(rental.book.id).orElseThrow { BookException("Book not found.")}
+        val book = bookRepository.findById(order.book.id).orElseThrow { BookException("Book not found.")}
         book.available = true
         bookRepository.save(book)
     }
 
-    override fun listRentals(cpf: String): List<Rental> {
-        return rentalRepository.findAllByCpf(cpf)
+    override fun listOrders(cpf: String): List<Order> {
+        return orderRepository.findAllByCpf(cpf)
+    }
+
+    override  fun purchase(isbn: String, cpf: String, quantity: Int): Order {
+
+        val customer = customerRepository.findCustomerByCpf(cpf).orElseThrow( { BookException("User not found.") } )
+
+        val book = bookRepository.findBookByIsbn(isbn).orElseThrow( { BookException("Book not found.") } )
+//        book.available = false
+
+        val order = Order(orderService.getOrderNumber(), book, customer, LocalDate.now(), null, StatusEnum.PURCHASED.name, cpf, OrderTypeEnum.PURCHASE.name, quantity)
+        System.out.println("TESTE++++")
+        val orderDone = orderRepository.save(order)
+        System.out.println("TESTE2")
+        return orderDone
     }
 }

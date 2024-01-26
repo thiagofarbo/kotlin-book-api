@@ -5,22 +5,22 @@ import lombok.Getter
 import java.util.*
 
 @Getter
-enum class CallTypeEnum(val typeCall: String){
+enum class OrderTypeEnum(val typeCall: String){
 
-    BUY("Buy"),
+    PURCHASE("Purchase"),
     RENT("Rent");
 
     val description: String = ""
     companion object {
-        fun getCallType(type: String): CallTypeEnum {
-            return Arrays.stream(CallTypeEnum.values())
+        fun getCallType(type: String): OrderTypeEnum {
+            return Arrays.stream(OrderTypeEnum.values())
                 .filter { t -> t.description.equals(type) }
                 .findFirst()
                 .orElseThrow { BookException("Call Type not found") }
         }
 
-        fun getCallTypeByEnum(type: CallTypeEnum): CallTypeEnum {
-            return Arrays.stream(CallTypeEnum.values())
+        fun getCallTypeByEnum(type: OrderTypeEnum): OrderTypeEnum {
+            return Arrays.stream(OrderTypeEnum.values())
                 .filter { t -> t.equals(type) }
                 .findFirst()
                 .orElseThrow { BookException("Call Type not found") }

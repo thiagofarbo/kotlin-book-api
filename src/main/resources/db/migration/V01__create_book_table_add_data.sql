@@ -18,41 +18,40 @@ CREATE TABLE IF NOT EXISTS book (
     synopsis VARCHAR(255) NOT NULL,
     price DOUBLE PRECISION NOT NULL,
     available BOOLEAN NOT NULL,
-
     CONSTRAINT pk_book_id PRIMARY KEY (id)
 );
 
-CREATE SEQUENCE IF NOT exists sq_renter
+CREATE SEQUENCE IF NOT exists sq_customer
   INCREMENT 1
   START 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   CACHE 1;
 
-CREATE TABLE IF NOT EXISTS renter (
-    id BIGINT NOT NULL DEFAULT NEXTVAL ('sq_renter'),
+CREATE TABLE IF NOT EXISTS customer (
+    id BIGINT NOT NULL DEFAULT NEXTVAL ('sq_customer'),
     name VARCHAR(255) NOT NULL,
     email VARCHAR(100),
     cpf VARCHAR(15) NOT NULL,
-    CONSTRAINT pk_renter_id PRIMARY KEY (id)
+    CONSTRAINT pk_customer_id PRIMARY KEY (id)
 );
 
-CREATE SEQUENCE IF NOT exists sq_rental
+CREATE SEQUENCE IF NOT exists sq_order
   INCREMENT 1
   START 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   CACHE 1;
 
-CREATE TABLE IF NOT EXISTS rental (
-    id BIGINT NOT NULL DEFAULT NEXTVAL ('sq_rental'),
-    renter_id BIGINT NOT NULL,
+CREATE TABLE IF NOT EXISTS orders (
+    id VARCHAR(255) NOT NULL DEFAULT NEXTVAL ('sq_order'),
+    customer_id BIGINT NOT NULL,
     book_id BIGINT NOT NULL,
-    rental_date DATE NOT NULL,
+    order_date DATE NOT NULL,
     return_date DATE,
     status VARCHAR(40),
     cpf VARCHAR(15) NOT NULL,
-    FOREIGN KEY (renter_id) REFERENCES renter (id),
+    FOREIGN KEY (customer_id) REFERENCES customer (id),
     FOREIGN KEY (book_id) REFERENCES book (id)
 );
 
@@ -88,8 +87,8 @@ VALUES ('Sample Book', 'John Doe', '978-1234567890', 2023, 'Example Publishers',
 INSERT INTO book (title, author, isbn, publication_year, publisher, number_of_pages, genre, language, synopsis, price, available)
 VALUES ('Another Book', 'Jane Smith', '978-9876543210', 2022, 'Acme Publishing', 250, 'Mystery', 'English', 'A mysterious book.', 19.99, FALSE);
 
-INSERT INTO renter (id, name, email, cpf)
+INSERT INTO customer (id, name, email, cpf)
 VALUES (1, 'João Silva', 'joao.silva@example.com', '36632394035');
 
-INSERT INTO renter (id, name, email, cpf)
+INSERT INTO customer (id, name, email, cpf)
 VALUES (2, 'Maria Souza', 'maria.souza@example.com','52414566191');

@@ -1,7 +1,7 @@
 package br.com.book.api.service
 
 import br.com.book.api.domain.Book
-import br.com.book.api.domain.Rental
+import br.com.book.api.domain.Order
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import java.time.LocalDate
@@ -16,14 +16,16 @@ interface BookService{
 
     fun update(book: Book, id: Long): Book
 
-    fun listByTitle(title: String): Book
+     fun listByTitle(title: String): Book
 
-    suspend fun findBookInWareHouse(isbn: String): List<Book>
+     fun findBookInWareHouse(isbn: String): List<Book>
 
-    fun rentBook(isbn: String, cpf:String, returnDate: LocalDate): Rental
+     fun rentBook(isbn: String, cpf:String, returnDate: LocalDate): Order
 
-    fun returnBook(title: String, cpf:String, returnDate: LocalDate)
+     fun returnBook(title: String, cpf:String, returnDate: LocalDate)
 
-    fun listRentals(cpf: String): List<Rental>
+     fun listOrders(cpf: String): List<Order>
+
+     fun purchase(isbn: String, cpf:String, quantity: Int): Order
 
 }

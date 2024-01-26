@@ -4,11 +4,11 @@ import java.io.Serializable
 import javax.persistence.*
 
 @Entity
-@Table(name = "renter")
-data class Renter(
+@Table(name = "customer")
+data class Customer(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "gen_" + "renter", sequenceName = "sq_" + "renter", allocationSize = 1)
+    @SequenceGenerator(name = "gen_" + "customer", sequenceName = "sq_" + "customer", allocationSize = 1)
     val id: Long,
     val name: String,
     val email: String,
@@ -18,7 +18,7 @@ data class Renter(
 
     override fun toString(): String {
         return buildString {
-            appendln("Renter(id=$id, name='$name', email='$email', cpf='$cpf')")
+            appendln("Customer(id=$id, name='$name', email='$email', cpf='$cpf')")
         }
     }
 }

@@ -2,14 +2,13 @@ package br.com.book.api.controller
 
 import br.com.book.api.context.CallStrategy
 import br.com.book.api.domain.Book
-import br.com.book.api.domain.enums.CallTypeEnum
+import br.com.book.api.domain.enums.OrderTypeEnum
 import br.com.book.api.domain.order.OrderRequest
 import br.com.book.api.domain.order.OrderResponse
 import br.com.book.api.service.BookService
 import br.com.book.api.util.PageRequestBuilder
 import kotlinx.coroutines.runBlocking
 import org.springframework.format.annotation.DateTimeFormat
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
@@ -38,8 +37,8 @@ class BookController(
     @GetMapping("/title")
     fun listByTitle(@RequestParam title: String) = bookService.listByTitle(title)
 
-    @GetMapping("/rentals")
-    fun listRentals(@RequestParam cpf: String) = bookService.listRentals(cpf)
+    @GetMapping("/orders")
+    fun listOrders(@RequestParam cpf: String) = bookService.listOrders(cpf)
 
 
     @PutMapping("/{id}")
@@ -51,8 +50,8 @@ class BookController(
     }
 
     @PostMapping("/{isbn}/rents")
-    fun rent(@PathVariable isbn: String, @RequestParam cpf:String, @RequestParam quantity: Integer, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) returnDate:LocalDate): ResponseEntity<OrderResponse> {
-        val orderRequest = OrderRequest(isbn, cpf, CallTypeEnum.RENT, returnDate)
+    fun rent(@PathVariable isbn: String, @RequestParam cpf:String, @RequestParam quantity: Int, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) returnDate:LocalDate): ResponseEntity<OrderResponse> {
+        val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.RENT, quantity, returnDate)
         return ResponseEntity.ok(callService.createOrder(orderRequest))
     }
 
@@ -60,5 +59,12 @@ class BookController(
     fun returnBook(@RequestParam title: String, @RequestParam cpf:String, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) returnDate:LocalDate): ResponseEntity<Void> {
         bookService.returnBook(title, cpf, returnDate)
         return ResponseEntity.noContent().build()
+    }
+
+    @PostMapping("/{isbn}/purchase")
+    fun purchase(@PathVariable isbn: String, @RequestParam cpf:String, @RequestParam quantity: Int): ResponseEntity<OrderResponse> {
+        val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.PURCHASE, quantity, null)
+        val ok = ResponseEntity.ok(callService.createOrder(orderRequest))
+        return ok
     }
 }

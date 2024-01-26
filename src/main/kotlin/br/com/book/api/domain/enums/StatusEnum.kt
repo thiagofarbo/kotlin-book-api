@@ -8,6 +8,7 @@ import java.util.*
 enum class StatusEnum(val status: String){
 
     RENTED("Rented"),
+    PURCHASED("Purchased"),
     RETURNED("Returned");
 
     val description: String = ""

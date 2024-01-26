@@ -1,6 +1,6 @@
 package br.com.book.api.exception
 
-class RentalException: RuntimeException {
+class OrderException: RuntimeException {
 
     constructor(mensagem: String) : super(mensagem)
 

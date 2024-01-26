@@ -1,5 +1,6 @@
 package br.com.book.api
 
+import br.com.book.api.service.orderNumber.GenerateOrder
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 

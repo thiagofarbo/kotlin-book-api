@@ -36,5 +36,4 @@ class ConsumerMessages {
             System.out.println("Resultado: {}"+ payload.value())
         }
     }
-
 }

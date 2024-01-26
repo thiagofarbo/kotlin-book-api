@@ -24,7 +24,7 @@ data class Book (@Id
                  var available: Boolean,
 
 //                 @OneToMany(mappedBy = "book")
-//                 val renters: List<Renter> = mutableListOf()
+//                 val renters: List<User> = mutableListOf()
 ): Serializable {
     constructor() : this(0L, "","","", 0,"",0,
         "","",  BigDecimal.ZERO, "", false
