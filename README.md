@@ -1,5 +1,4 @@
-![alt text](http://url/to/img.png)
-
+![image](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/43a8d5f5-e6ce-4961-b3a8-279f257c85c6)
 
 
 # About this project
