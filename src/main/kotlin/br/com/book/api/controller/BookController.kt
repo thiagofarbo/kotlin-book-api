@@ -50,8 +50,8 @@ class BookController(
     }
 
     @PostMapping("/{isbn}/rents")
-    fun rent(@PathVariable isbn: String, @RequestParam cpf:String, @RequestParam quantity: Int, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) returnDate:LocalDate): ResponseEntity<OrderResponse> {
-        val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.RENT, quantity, returnDate)
+    fun rent(@PathVariable isbn: String, @RequestParam cpf:String,  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) returnDate:LocalDate): ResponseEntity<OrderResponse> {
+        val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.RENT, null, returnDate)
         return ResponseEntity.ok(callService.createOrder(orderRequest))
     }
 

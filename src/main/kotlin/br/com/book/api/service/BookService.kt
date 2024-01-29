@@ -26,6 +26,6 @@ interface BookService{
 
      fun listOrders(cpf: String): List<Order>
 
-     fun purchase(isbn: String, cpf:String, quantity: Int): Order
+     fun purchase(isbn: String, cpf:String, quantity: Int?): Order
 
 }

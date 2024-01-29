@@ -6,6 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
 
 @Builder
-data class OrderRequest(val isbn: String, val cpf:String, val callType: OrderTypeEnum, val quantity: Int, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) val returnDate : LocalDate?)
+data class OrderRequest(val isbn: String, val cpf:String, val callType: OrderTypeEnum, val quantity: Int?, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) val returnDate : LocalDate?)
 
 

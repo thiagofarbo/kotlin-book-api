@@ -11,6 +11,19 @@ spring:
       properties:
         hibernate.default_schema: book
 
+# Redis Configuration
+redis:
+  port: 6379
+  host: localhost
+  topic:
+    customer: customer
+    book: book
+  pool:
+    maxIdle: 8 # max idle connections in the pool
+    minIdle: 0 # min idle connections in the pool
+    maxActive: -1 # no limit to the number of active connections
+    maxWait: 30000 # time limit to get a connection - only applies if maxActive is finite
+
 # Flyway Configuration
   flyway:
     enabled: true
@@ -23,6 +36,11 @@ bootstrap:
 
 topic:
   name:
-    consumer: book
+    consumer: customer
     producer: book
     groupId: group_id
+
+hash:
+  key:
+    book: book
+    customer: customer

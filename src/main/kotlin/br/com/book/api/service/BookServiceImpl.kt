@@ -1,5 +1,6 @@
 package br.com.book.api.service
 import br.com.book.api.domain.Book
+import br.com.book.api.domain.Customer
 import br.com.book.api.domain.Order
 import br.com.book.api.domain.enums.OrderTypeEnum
 import br.com.book.api.domain.enums.StatusEnum
@@ -8,11 +9,13 @@ import br.com.book.api.exception.OrderException
 import br.com.book.api.repository.OrderRepository
 import br.com.book.api.repository.CustomerRepository
 import br.com.book.api.repository.BookRepository
+import br.com.book.api.repository.RedisRepository
 import br.com.book.api.service.orderNumber.GenerateOrder
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import java.util.*
 
 @Service
 class BookServiceImpl (
@@ -23,7 +26,9 @@ class BookServiceImpl (
 
     private val orderRepository: OrderRepository,
 
-    private val orderService: OrderService
+    private val orderService: OrderService,
+
+    private val redisRepository: RedisRepository
 
 ): BookService{
     override fun save(book: Book): Book {
@@ -61,11 +66,14 @@ class BookServiceImpl (
             throw OrderException("Book already rented", book.id.toString())
         }
 
-        val customer = customerRepository.findCustomerByCpf(cpf).orElseThrow( { BookException("User not found.") } )
-
-        val order = Order(orderService.getOrderNumber(), book, customer, LocalDate.now(), returnDate, StatusEnum.RENTED.name, cpf, OrderTypeEnum.RENT.name, null)
+        var customer = redisRepository.findByCpf(cpf)
+        if (!customer.isPresent){
+            customer =  Optional.of(customerRepository.findCustomerByCpf(cpf).orElseThrow({ BookException("User not found.") }))
+        }
+        val order = Order(orderService.getOrderNumber(), book, customer.get(), LocalDate.now(), returnDate, StatusEnum.RENTED.name, cpf, OrderTypeEnum.RENT.name, null)
 
         val rentedBook = orderRepository.save(order)
+        redisRepository.save(customer.get())
 
         return rentedBook
     }
@@ -90,7 +98,7 @@ class BookServiceImpl (
         return orderRepository.findAllByCpf(cpf)
     }
 
-    override  fun purchase(isbn: String, cpf: String, quantity: Int): Order {
+    override  fun purchase(isbn: String, cpf: String, quantity: Int?): Order {
 
         val customer = customerRepository.findCustomerByCpf(cpf).orElseThrow( { BookException("User not found.") } )
 

@@ -1,7 +1,9 @@
 package br.com.book.api.domain
 
+import org.springframework.data.redis.core.RedisHash
 import java.io.Serializable
 import javax.persistence.*
+
 
 @Entity
 @Table(name = "customer")
@@ -20,5 +22,25 @@ data class Customer(
         return buildString {
             appendln("Customer(id=$id, name='$name', email='$email', cpf='$cpf')")
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Customer) return false
+
+        if (id != other.id) return false
+        if (name != other.name) return false
+        if (email != other.email) return false
+        if (cpf != other.cpf) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + email.hashCode()
+        result = 31 * result + cpf.hashCode()
+        return result
     }
 }

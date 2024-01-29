@@ -27,6 +27,13 @@ services:
       POSTGRES_PASSWORD: admin
     ports:
       - '5432:5432'
+  redis:
+    image: "redis:latest"
+    container_name: redis-server
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
 
   zookeeper:
     image: wurstmeister/zookeeper
@@ -35,7 +42,6 @@ services:
       - book-net
     ports:
       - "2181:2181"
-
   book-kafka:
     image: wurstmeister/kafka
     container_name: book-kafka
@@ -50,6 +56,7 @@ services:
 volumes:
   data:
     external: false
+  redis_data:
 networks:
   book-net:
     driver: bridge
