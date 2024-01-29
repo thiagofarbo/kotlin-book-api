@@ -1,4 +1,5 @@
-![book-arquitetura drawio](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/79dc31d1-5619-47cb-9ae9-36ee09fe466c)
+![book-arquitetura drawio](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/45149647-7aef-472d-bf93-0a3d8d2f13fb)
+
 
 
 # About this project
