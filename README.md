@@ -1,4 +1,5 @@
-![book-arquitetura drawio](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/5f8179e4-ae60-44a2-9c98-e1921ce3718e)
+![book-arquitetura drawio](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/fa7de8bb-1e9c-4654-8ba7-c627dea17ae0)
+
 
 # About this project
 This application aims to purchase and rent books.
