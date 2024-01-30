@@ -7,14 +7,12 @@ import org.springframework.stereotype.Service
 @Service
 class OrderService(private val generateOrder: GenerateOrder) {
     fun getOrderNumber(): String = runBlocking {
-        println("Início da execução")
-
+        println("Start of execution ")
         val orderNumber:String =  generateOrder.generate()
 
-        println("Execução enquanto a operação assíncrona está em andamento")
+        println(" asynchronous operation is in progress")
 
-
-        println("Fim da execução. Resultado: $orderNumber")
+        println("End of execution, result : $orderNumber")
 
         orderNumber
     }

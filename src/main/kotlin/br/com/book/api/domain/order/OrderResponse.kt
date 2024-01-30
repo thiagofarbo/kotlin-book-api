@@ -3,14 +3,21 @@ package br.com.book.api.domain.order
 import br.com.book.api.domain.Book
 import br.com.book.api.domain.Customer
 import br.com.book.api.domain.enums.OrderTypeEnum
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
 import lombok.Builder
 import lombok.Getter
 import lombok.Setter
+import org.apache.commons.lang3.builder.ToStringBuilder
+import org.apache.commons.lang3.builder.ToStringStyle
+import java.io.Serializable
 import java.time.LocalDate
 
 @Getter
 @Setter
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
 data class OrderResponse(
 
     val orderId: String?,
@@ -26,7 +33,7 @@ data class OrderResponse(
     val returnDate: LocalDate?,
 
     val quantity : Int?,
-){
+):Serializable{
     constructor(
         callType: OrderTypeEnum,
         book: Book,
@@ -35,10 +42,6 @@ data class OrderResponse(
         returnDate: LocalDate,
         quantity: Int
     ) : this(null, callType, book, customer, orderDate, returnDate, quantity)
-
-    override fun toString(): String {
-        return "OrderResponse(orderId=$orderId, callType='$callType', book=$book, customer=$customer, orderDate=$orderDate, returnDate=$returnDate, quantity=$quantity)"
-    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -64,6 +67,9 @@ data class OrderResponse(
         result = 31 * result + returnDate.hashCode()
         result = 31 * result + quantity.hashCode()
         return result
+    }
+    override fun toString(): String {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE)
     }
 }
 

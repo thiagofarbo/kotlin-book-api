@@ -1,5 +1,7 @@
 package br.com.book.api.domain
 
+import org.apache.commons.lang3.builder.ToStringBuilder
+import org.apache.commons.lang3.builder.ToStringStyle
 import org.springframework.data.redis.core.RedisHash
 import java.io.Serializable
 import javax.persistence.*
@@ -19,9 +21,7 @@ data class Customer(
     constructor() : this(0L, "", "", "")
 
     override fun toString(): String {
-        return buildString {
-            appendln("Customer(id=$id, name='$name', email='$email', cpf='$cpf')")
-        }
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE)
     }
 
     override fun equals(other: Any?): Boolean {

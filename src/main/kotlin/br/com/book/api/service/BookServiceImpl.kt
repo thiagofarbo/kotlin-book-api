@@ -103,12 +103,9 @@ class BookServiceImpl (
         val customer = customerRepository.findCustomerByCpf(cpf).orElseThrow( { BookException("User not found.") } )
 
         val book = bookRepository.findBookByIsbn(isbn).orElseThrow( { BookException("Book not found.") } )
-//        book.available = false
 
         val order = Order(orderService.getOrderNumber(), book, customer, LocalDate.now(), null, StatusEnum.PURCHASED.name, cpf, OrderTypeEnum.PURCHASE.name, quantity)
-        System.out.println("TESTE++++")
         val orderDone = orderRepository.save(order)
-        System.out.println("TESTE2")
         return orderDone
     }
 }

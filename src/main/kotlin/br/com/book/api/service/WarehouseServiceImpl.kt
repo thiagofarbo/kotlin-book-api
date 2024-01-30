@@ -10,15 +10,16 @@ class WarehouseServiceImpl (
     private val warehouseRepository: WarehouseRepository,
 
 ): WarehouseService{
+
     override fun save(warehouse: Warehouse): Warehouse {
         return warehouseRepository.save(warehouse)
     }
 
     override fun findBookByIsbn(isbn: String): Warehouse {
-        return warehouseRepository.findBookByIsbn(isbn).orElseThrow( { BookException("Book not found.") } )
+        return warehouseRepository.findWarehouseByIsbn(isbn).orElseThrow( { BookException("Book not found: ", isbn) } )
     }
 
     override fun findBookByTitle(title: String): Warehouse {
-        return warehouseRepository.findBookByTitle(title).orElseThrow( { BookException("Book not found.") } )
+        return warehouseRepository.findWarehouseByTitle(title).orElseThrow( { BookException("Book not found :", title) } )
     }
 }

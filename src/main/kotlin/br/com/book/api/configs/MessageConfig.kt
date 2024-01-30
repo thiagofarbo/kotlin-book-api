@@ -1,4 +1,4 @@
-package br.com.book.api.message
+package br.com.book.api.configs
 
 import com.fasterxml.jackson.databind.JsonNode
 import org.apache.kafka.clients.consumer.ConsumerConfig

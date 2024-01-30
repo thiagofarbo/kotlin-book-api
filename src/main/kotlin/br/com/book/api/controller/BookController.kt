@@ -64,7 +64,6 @@ class BookController(
     @PostMapping("/{isbn}/purchase")
     fun purchase(@PathVariable isbn: String, @RequestParam cpf:String, @RequestParam quantity: Int): ResponseEntity<OrderResponse> {
         val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.PURCHASE, quantity, null)
-        val ok = ResponseEntity.ok(callService.createOrder(orderRequest))
-        return ok
+        return ResponseEntity.ok(callService.createOrder(orderRequest))
     }
 }

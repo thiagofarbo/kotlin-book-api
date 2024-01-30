@@ -1,6 +1,8 @@
 package br.com.book.api.domain
 
 import br.com.book.api.domain.enums.OrderTypeEnum
+import org.apache.commons.lang3.builder.ToStringBuilder
+import org.apache.commons.lang3.builder.ToStringStyle
 import java.io.Serializable
 import java.time.LocalDate
 import javax.persistence.*
@@ -37,10 +39,7 @@ data class Order (
     ): Serializable {
     constructor() : this("", Book(), Customer(), LocalDate.now(), LocalDate.now(), "", "", OrderTypeEnum.PURCHASE.name, 0
     )
-
     override fun toString(): String {
-        return "Order(id=$id, book=$book, customer=$customer, orderDate=$orderDate, returnDate=$returnDate, status='$status', cpf='$cpf', orderType=$orderType, quantity=$quantity)"
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE)
     }
-
-
 }

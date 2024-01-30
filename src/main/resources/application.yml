@@ -36,7 +36,7 @@ bootstrap:
 
 topic:
   name:
-    consumer: customer
+    consumer: book
     producer: book
     groupId: group_id
 

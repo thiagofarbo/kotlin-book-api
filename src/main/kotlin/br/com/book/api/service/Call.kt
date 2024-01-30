@@ -4,24 +4,17 @@ import br.com.book.api.context.CallStrategy
 import br.com.book.api.domain.enums.OrderTypeEnum
 import br.com.book.api.domain.order.OrderRequest
 import br.com.book.api.domain.order.OrderResponse
-import br.com.book.api.exception.CustomerException
-import br.com.book.api.repository.CustomerRepository
-import br.com.book.api.service.message.KafkaService
-import br.com.book.api.service.orderNumber.GenerateOrder
-import kotlinx.coroutines.runBlocking
+import br.com.book.api.service.message.KafkaProducerService
 import org.springframework.stereotype.Service
-import org.springframework.web.servlet.function.ServerResponse.async
 import java.time.LocalDate
 
 @Service
 class Call (
     private val bookService: BookService,
 
-    private val kafkaService: KafkaService,
+    private val kafkaService: KafkaProducerService,
 
-    private val orderService: OrderService
-
-): CallStrategy{
+    ): CallStrategy{
 
     lateinit var order: OrderResponse
 
