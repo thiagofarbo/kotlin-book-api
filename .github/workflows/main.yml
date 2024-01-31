@@ -34,6 +34,6 @@ jobs:
           context: .
           push: true
           tags: |
-            thiago1432/kotlin-book-api:v2
+            thiago1432/kotlin-book-api:${{github.run.number}}
             thiago1432/kotlin-book-api:latest
    
