@@ -1,9 +1,6 @@
 package br.com.book.api.service.orderNumber
 
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Component
-import org.springframework.web.servlet.function.ServerResponse.async
 import java.util.*
 
 @Component

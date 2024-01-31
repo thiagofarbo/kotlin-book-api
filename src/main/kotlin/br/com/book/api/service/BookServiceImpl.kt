@@ -86,7 +86,7 @@ class BookServiceImpl (
             .filter { r -> r.book.title.equals(title) }
             .findFirst().orElseThrow( { BookException("Order not found") } )
 
-        order.status = "RETURNED"
+        order.status = StatusEnum.RETURNED.name
         orderRepository.save(order)
 
         val book = bookRepository.findById(order.book.id).orElseThrow { BookException("Book not found.")}
