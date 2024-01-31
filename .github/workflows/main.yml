@@ -8,13 +8,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.1
+      - name: Auth to Docker Hub
+        uses: docker/login-action@v3.0.0
+        with:
+          username: ${{secrets.DOCKERHUB_USER}}
+          password: ${{secrets.DOCKERHUB_PASSWORD}}
+      
       - name: Build image
         uses: docker/build-push-action@v5.1.0
         with:
           java-version: 17
           context: ./target/kotlin-book-api-0.0.1.jar
           push: true
-          tags:
+          tags: |
             thiago1432/kotlin-book-api:v2
             thiago1432/kotlin-book-api:latest
    
