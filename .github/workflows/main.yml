@@ -46,3 +46,10 @@ jobs:
         with:
           method: kubeconfig
           kubeconfig: ${{secrets.K8S_CONFIG}}
+      - name: Deployment to Cluster Kubernetes
+        uses: Azure/k8s-deploy@v4.9
+        with: 
+          images: thiago1432/kotlin-book-api:${{github.run_number}}
+          manifests: |
+            k8s/deployment.yml  
+        
