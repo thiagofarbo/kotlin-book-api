@@ -1,0 +1,20 @@
+name: CI-CD
+
+on:
+  push:
+    branches: ["main"]
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: Build image
+        uses: docker/build-push-action@v5.1.0
+        with:
+          java-version: 17
+          context: ./target/kotlin-book-api-0.0.1.jar
+          push: true
+          tags:
+            thiago1432/kotlin-book-api:v2
+            thiago1432/kotlin-book-api:latest
+   
