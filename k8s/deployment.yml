@@ -59,7 +59,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: fabricioveronez/live-kube-news
+          image: thiago1432/kotlin-book-api
           ports:
             - containerPort: 8080
           env:
