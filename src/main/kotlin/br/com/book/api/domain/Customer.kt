@@ -20,10 +20,6 @@ data class Customer(
 ) : Serializable {
     constructor() : this(0L, "", "", "")
 
-    override fun toString(): String {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE)
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Customer) return false
@@ -42,5 +38,9 @@ data class Customer(
         result = 31 * result + email.hashCode()
         result = 31 * result + cpf.hashCode()
         return result
+    }
+
+    override fun toString(): String {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE)
     }
 }
