@@ -61,25 +61,13 @@ jobs:
     # needs: [CI, CD]
     timeout-minutes: 10
     steps:
-      - name: notify slack
+      - name: Build notification
         id: slack
         uses: slackapi/slack-github-action@v1.25.0
-        if: ${{ failure() }}
         with:
-          channel-id: 'C06GUHRL1EY' # slack channel
           payload: |
             {
-              "text": "GitHub Action failed",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*Production deployment check failed* :fire_engine:\n High error rate detected after deployment! Rolling back..."
-                  }
-                }
-              ]
+              "text": "Git push done in the repository , kotlin-book-api"
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_NOTIFICATIONS_TOKEN }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
