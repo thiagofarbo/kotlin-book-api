@@ -67,7 +67,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "Git push done in the repository , kotlin-book-api"
+              "text": "Build successfully on GitHub", ${{ github.event.repository.name }}
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_NOTIFICATIONS_TOKEN }}
