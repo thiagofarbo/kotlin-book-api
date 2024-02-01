@@ -67,7 +67,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "Build successfully on GitHub", ${{ github.event.repository.name }}
+              "text": "Build successfully on GitHub" + ${{ secrets.MEUSEGREDOPRIVADO }}
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_NOTIFICATIONS_TOKEN }}
