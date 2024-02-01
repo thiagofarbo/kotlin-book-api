@@ -3,6 +3,7 @@ name: CI-CD
 on:
   push:
     branches: ["main"]
+
 jobs:
   CI:
     runs-on: ubuntu-latest
@@ -36,6 +37,7 @@ jobs:
           tags: |
             thiago1432/kotlin-book-api:${{github.run_number}}
             thiago1432/kotlin-book-api:latest
+
   CD:
     runs-on: ubuntu-latest
     needs: [CI]
@@ -51,5 +53,17 @@ jobs:
         with: 
           images: thiago1432/kotlin-book-api:${{github.run_number}}
           manifests: |
-            k8s/deployment.yml  
-        
+            k8s/deployment.yml 
+
+  slack_notification: 
+        runs-on: ubuntu-latest
+        steps:
+          - name: Send notification on Slack using Webhooks
+            uses: slackapi/slack-github-action@v1.24.0
+            with:
+              payload: |
+                {
+                  "text": "Git push done in the repository , kotlin-book-api"
+                }
+            env:
+              SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
