@@ -55,15 +55,31 @@ jobs:
           manifests: |
             k8s/deployment.yml 
 
-  slack_notification: 
-        runs-on: ubuntu-latest
-        steps:
-          - name: Send notification on Slack using Webhooks
-            uses: slackapi/slack-github-action@v1.24.0
-            with:
-              payload: |
+  deploy:
+    name: 'Deployment'
+    runs-on: ubuntu-latest
+    needs: [CI, CD]
+    timeout-minutes: 10
+    steps:
+      - name: notify slack
+        id: slack
+        uses: slackapi/slack-github-action@v1.25.0
+        if: ${{ failure() }}
+        with:
+          channel-id: 'F04D4MXFY3R' # slack channel #alerts-test
+          payload: |
+            {
+              "text": "GitHub Action failed",
+              "blocks": [
                 {
-                  "text": "Git push done in the repository , kotlin-book-api"
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Production deployment check failed* :fire_engine:\n High error rate detected after deployment! Rolling back..."
+                  }
                 }
-            env:
-              SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_NOTIFICATIONS_TOKEN }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
