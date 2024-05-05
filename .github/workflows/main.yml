@@ -3,6 +3,7 @@ name: CI-CD
 on:
   push:
     branches: ["main"]
+
 jobs:
   CI:
     runs-on: ubuntu-latest
@@ -36,6 +37,7 @@ jobs:
           tags: |
             thiago1432/kotlin-book-api:${{github.run_number}}
             thiago1432/kotlin-book-api:latest
+
   CD:
     runs-on: ubuntu-latest
     needs: [CI]
@@ -51,5 +53,35 @@ jobs:
         with: 
           images: thiago1432/kotlin-book-api:${{github.run_number}}
           manifests: |
-            k8s/deployment.yml  
-        
+            k8s/deployment.yml 
+
+  deploy:
+    name: 'Notification on Slack'
+    if: success()
+    runs-on: ubuntu-latest
+    needs: [CI, CD]
+    timeout-minutes: 10
+    steps:
+      - name: Build notification (on success)
+        id: slack-success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "Build successfully on GitHub repository ${{ github.event.repository.name }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_NOTIFICATIONS_TOKEN }}
+
+      - name: Build notification (on failure)
+        id: slack-failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "Build failed on GitHub repository ${{ github.event.repository.name }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_NOTIFICATIONS_TOKEN }}
