@@ -11,6 +11,7 @@ import kotlinx.coroutines.runBlocking
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.math.BigDecimal
 import java.time.LocalDate
 
 @RestController
@@ -50,8 +51,8 @@ class BookController(
     }
 
     @PostMapping("/{isbn}/rents")
-    fun rent(@PathVariable isbn: String, @RequestParam cpf:String,  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) returnDate:LocalDate): ResponseEntity<OrderResponse> {
-        val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.RENT, null, returnDate)
+    fun rent(@PathVariable isbn: String, @RequestParam cpf:String,@RequestParam quantity: Int, @RequestParam voucherCode: String, @RequestParam price: BigDecimal, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) returnDate:LocalDate): ResponseEntity<OrderResponse> {
+        val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.RENT, quantity, returnDate, voucherCode, price)
         return ResponseEntity.ok(callService.createOrder(orderRequest))
     }
 
@@ -62,8 +63,8 @@ class BookController(
     }
 
     @PostMapping("/{isbn}/purchase")
-    fun purchase(@PathVariable isbn: String, @RequestParam cpf:String, @RequestParam quantity: Int): ResponseEntity<OrderResponse> {
-        val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.PURCHASE, quantity, null)
+    fun purchase(@PathVariable isbn: String, @RequestParam cpf:String, @RequestParam quantity: Int, @RequestParam voucherCode: String, @RequestParam price: BigDecimal): ResponseEntity<OrderResponse> {
+        val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.PURCHASE, quantity, null, voucherCode, price)
         return ResponseEntity.ok(callService.createOrder(orderRequest))
     }
 }

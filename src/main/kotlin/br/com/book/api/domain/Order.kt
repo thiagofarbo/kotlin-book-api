@@ -4,6 +4,7 @@ import br.com.book.api.domain.enums.OrderTypeEnum
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
 import java.io.Serializable
+import java.math.BigDecimal
 import java.time.LocalDate
 import javax.persistence.*
 
@@ -28,16 +29,18 @@ data class Order (
 
     val returnDate: LocalDate?,
 
-    var status: String,
+    var status: String?,
 
     val cpf: String,
 
-    var orderType: String,
+    var orderType: String?,
 
     var quantity: Int?,
 
+    var price: BigDecimal
+
     ): Serializable {
-    constructor() : this("", Book(), Customer(), LocalDate.now(), LocalDate.now(), "", "", OrderTypeEnum.PURCHASE.name, 0
+    constructor() : this("", Book(), Customer(), LocalDate.now(), LocalDate.now(), "", "", OrderTypeEnum.PURCHASE.name, 0, BigDecimal.ZERO
     )
     override fun toString(): String {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE)

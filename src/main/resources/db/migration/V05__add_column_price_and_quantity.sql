@@ -1,0 +1,3 @@
+ALTER TABLE orders
+ADD COLUMN price NUMERIC(10, 2),
+ADD COLUMN quantity INT NOT NULL;

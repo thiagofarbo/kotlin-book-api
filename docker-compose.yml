@@ -27,6 +27,20 @@ services:
       POSTGRES_PASSWORD: admin
     ports:
       - '5432:5432'
+  coupon_db:
+    image: postgres
+    restart: always
+    container_name: db-coupon
+    volumes:
+      - data:/var/lib/postgresql/db
+    networks:
+      - book-net
+    environment:
+      POSTGRES_DB: coupon
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - '5433:5432'
   redis:
     image: "redis:latest"
     container_name: redis-server

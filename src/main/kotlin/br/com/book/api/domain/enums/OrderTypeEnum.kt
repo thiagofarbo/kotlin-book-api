@@ -7,8 +7,8 @@ import java.util.*
 @Getter
 enum class OrderTypeEnum(val typeCall: String){
 
-    PURCHASE("Purchase"),
-    RENT("Rent");
+    PURCHASE("Purchased"),
+    RENT("Rented");
 
     val description: String = ""
     companion object {

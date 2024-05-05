@@ -11,6 +11,7 @@ import lombok.Setter
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
 import java.io.Serializable
+import java.math.BigDecimal
 import java.time.LocalDate
 
 @Getter
@@ -33,6 +34,8 @@ data class OrderResponse(
     val returnDate: LocalDate?,
 
     val quantity : Int?,
+
+    val price: BigDecimal
 ):Serializable{
     constructor(
         callType: OrderTypeEnum,
@@ -40,8 +43,9 @@ data class OrderResponse(
         customer: Customer,
         orderDate: LocalDate,
         returnDate: LocalDate,
-        quantity: Int
-    ) : this(null, callType, book, customer, orderDate, returnDate, quantity)
+        quantity: Int,
+        price: BigDecimal
+    ) : this(null, callType, book, customer, orderDate, returnDate, quantity, price)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
