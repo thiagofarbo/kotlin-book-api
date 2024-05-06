@@ -4,7 +4,9 @@
 
 
 # Design Systems 
-![book-arquitetura drawio](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/97a907a2-487c-43fe-acc9-5f849a46200f)
+![design-system](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/445b7504-8a66-4b59-bad4-f4b0acd2e8b5)
+
+
 
 
 # About this project
