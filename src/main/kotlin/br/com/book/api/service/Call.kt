@@ -28,7 +28,9 @@ class Call (
 
         if(callType == OrderTypeEnum.RENT){
 
-            val rentBook = bookService.rentBook(orderRequest.isbn, orderRequest.cpf, LocalDate.now().plusDays(10), orderRequest.price)
+            val price = couponService.calculateOrderPrice(orderRequest.price, orderRequest.quantity, orderRequest.voucherCode)
+
+            val rentBook = bookService.rentBook(orderRequest.isbn, orderRequest.cpf, LocalDate.now().plusDays(10), price)
 
             var returnDate: LocalDate = LocalDate.now()
 
@@ -36,15 +38,13 @@ class Call (
                 returnDate = rentBook.returnDate
             }
 
-            var price: BigDecimal = calculateOrderPrice(rentBook.price, orderRequest.quantity, orderRequest.voucherCode)
-
             order = OrderResponse(rentBook.id, callType, rentBook.book, rentBook.customer, rentBook.orderDate, returnDate, orderRequest.quantity, price)
 
             kafkaService.sendToKafkaJson(order)
 
         }else if (callType == OrderTypeEnum.PURCHASE){
 
-            val price: BigDecimal = calculateOrderPrice(orderRequest.price, orderRequest.quantity, orderRequest.voucherCode)
+            val price = couponService.calculateOrderPrice(orderRequest.price, orderRequest.quantity, orderRequest.voucherCode)
 
             val bookPurchased = bookService.purchase(orderRequest.isbn, orderRequest.cpf, orderRequest.quantity, price)
 
@@ -53,16 +53,5 @@ class Call (
             kafkaService.sendToKafkaJson(order)
         }
          return order
-    }
-
-    private fun calculateOrderPrice(price: BigDecimal, quantity: Int, voucherCode: String?): BigDecimal{
-
-        var orderPrice = price.multiply(quantity.toBigDecimal())
-
-        if (voucherCode != null) {
-            val coupon = couponService.verify(voucherCode)
-            orderPrice -= coupon.discount
-        }
-        return orderPrice
     }
 }

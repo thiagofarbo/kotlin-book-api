@@ -10,6 +10,7 @@ import br.com.book.api.repository.BookRepository
 import br.com.book.api.repository.CustomerRepository
 import br.com.book.api.repository.OrderRepository
 import br.com.book.api.repository.RedisRepository
+import br.com.book.api.service.coupon.CouponService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -21,6 +22,8 @@ import java.util.*
 class BookServiceImpl (
 
     private val bookRepository: BookRepository,
+
+    private val couponService: CouponService,
 
     private val customerRepository: CustomerRepository,
 
