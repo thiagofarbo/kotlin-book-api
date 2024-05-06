@@ -4,7 +4,8 @@
 
 
 # Design Systems 
-![design-systems drawio](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/7911e666-f369-499f-8739-a434043e5bf1)
+![design-system](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/445b7504-8a66-4b59-bad4-f4b0acd2e8b5)
+
 
 
 
