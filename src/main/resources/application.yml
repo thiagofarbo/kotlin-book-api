@@ -1,4 +1,8 @@
 spring:
+  restTemplate:
+    # Configuration global de timeout
+    read-timeout: 9000
+    connect-timeout: 9000
   datasource:
     url: jdbc:postgresql://localhost:5432/book
     username: admin

@@ -4,6 +4,7 @@ import br.com.book.api.domain.Book
 import br.com.book.api.domain.Order
 import br.com.book.api.domain.enums.OrderTypeEnum
 import br.com.book.api.domain.enums.StatusEnum
+import br.com.book.api.domain.payment.PaymentRequest
 import br.com.book.api.exception.BookException
 import br.com.book.api.exception.OrderException
 import br.com.book.api.repository.BookRepository
@@ -23,15 +24,15 @@ class BookServiceImpl (
 
     private val bookRepository: BookRepository,
 
-    private val couponService: CouponService,
-
     private val customerRepository: CustomerRepository,
 
     private val orderRepository: OrderRepository,
 
     private val orderService: OrderService,
 
-    private val redisRepository: RedisRepository
+    private val redisRepository: RedisRepository,
+
+    private val  paymentService: MakePaymentService
 
 ): BookService{
     override fun save(book: Book): Book {
@@ -58,7 +59,7 @@ class BookServiceImpl (
         TODO("Not yet implemented")
     }
 
-    override fun rentBook(isbn: String, cpf: String, returnDate: LocalDate, price: BigDecimal): Order {
+    override fun rentBook(isbn: String, cpf: String, quantity: Int, returnDate: LocalDate, price: BigDecimal): Order {
 
         val book = bookRepository.findBookByIsbn(isbn).orElseThrow( { BookException("Book not found.") } )
             book.available = false
@@ -73,7 +74,11 @@ class BookServiceImpl (
         if (!customer.isPresent){
             customer =  Optional.of(customerRepository.findCustomerByCpf(cpf).orElseThrow({ BookException("User not found.") }))
         }
-        val order = Order(orderService.getOrderNumber(), book, customer.get(), LocalDate.now(), returnDate, StatusEnum.RENTED.name, cpf, OrderTypeEnum.RENT.name, null, price)
+        val order = Order(orderService.getOrderNumber(), book, customer.get(), LocalDate.now(), returnDate, StatusEnum.RENTED.name, cpf, OrderTypeEnum.RENT.name, quantity, price)
+
+        val paymentRequest = PaymentRequest("USD", price.longValueExact(), "AV TEST" )
+
+        paymentService.makePayment(paymentRequest)
 
         val rentedBook = orderRepository.save(order)
         redisRepository.save(customer.get())

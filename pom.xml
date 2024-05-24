@@ -126,6 +126,17 @@
 			<version>3.14.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.squareup</groupId>
+			<artifactId>square</artifactId>
+			<version>37.0.0.20240118</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.payment</groupId>
+			<artifactId>payment-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 	</dependencies>
 

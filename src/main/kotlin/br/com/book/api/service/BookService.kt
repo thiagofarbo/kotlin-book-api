@@ -21,7 +21,7 @@ interface BookService{
 
      fun findBookInWareHouse(isbn: String): List<Book>
 
-     fun rentBook(isbn: String, cpf:String, returnDate: LocalDate, price: BigDecimal): Order
+     fun rentBook(isbn: String, cpf:String, quantity: Int, returnDate: LocalDate, price: BigDecimal): Order
 
      fun returnBook(title: String, cpf:String, returnDate: LocalDate)
 

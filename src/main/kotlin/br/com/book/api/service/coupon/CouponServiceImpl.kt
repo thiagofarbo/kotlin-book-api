@@ -8,8 +8,6 @@ import java.math.BigDecimal
 @Service
 class CouponServiceImpl(
 
-    private val couponService: CouponService,
-
     private val couponRepository: CouponRepository
 
 ): CouponService  {
@@ -25,7 +23,7 @@ class CouponServiceImpl(
         var orderPrice = price.multiply(quantity.toBigDecimal())
 
         if (voucherCode != null) {
-            val coupon = couponService.verify(voucherCode)
+            val coupon = verify(voucherCode)
             orderPrice -= coupon.discount
         }
         return orderPrice

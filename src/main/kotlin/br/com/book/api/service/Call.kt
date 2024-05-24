@@ -30,7 +30,7 @@ class Call (
 
             val price = couponService.calculateOrderPrice(orderRequest.price, orderRequest.quantity, orderRequest.voucherCode)
 
-            val rentBook = bookService.rentBook(orderRequest.isbn, orderRequest.cpf, LocalDate.now().plusDays(10), price)
+            val rentBook = bookService.rentBook(orderRequest.isbn, orderRequest.cpf, orderRequest.quantity, LocalDate.now().plusDays(10), price)
 
             var returnDate: LocalDate = LocalDate.now()
 

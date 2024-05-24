@@ -1,8 +1,9 @@
 package br.com.book.api
 
-import br.com.book.api.service.orderNumber.GenerateOrder
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.context.annotation.Bean
+import org.springframework.web.reactive.function.client.WebClient
 
 @SpringBootApplication
 class KotlinBookApiApplication
