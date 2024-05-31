@@ -4,8 +4,7 @@
 
 
 # Design Systems 
-![design-system](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/445b7504-8a66-4b59-bad4-f4b0acd2e8b5)
-
+![flow](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/2fa56a55-1cae-4035-b35f-08ce0a70dcda)
 
 
 
