@@ -22,6 +22,8 @@ This application aims to purchase and rent books.
   * Redis
   * Flyway
   * Kafka
+  * Prometheus
+  * Grafana
 
 # Database.
 We are using Postgrtes as our database running in a Docker container
