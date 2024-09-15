@@ -5,8 +5,7 @@
 
 
 # Design Systems 
-![flow](https://github.com/thiagofarbo/kotlin-book-api/assets/3967737/2fa56a55-1cae-4035-b35f-08ce0a70dcda)
-
+![system-book-design drawio](https://github.com/user-attachments/assets/68f77b28-3f60-4341-a031-1cbdfb470724)
 
 
 # About this project
