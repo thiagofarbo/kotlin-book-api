@@ -14,16 +14,16 @@ enum class OrderTypeEnum(val typeCall: String){
     companion object {
         fun getCallType(type: String): OrderTypeEnum {
             return Arrays.stream(OrderTypeEnum.values())
-                .filter { t -> t.description.equals(type) }
+                .filter { t -> type == t.description }
                 .findFirst()
-                .orElseThrow { BookException("Call Type not found") }
+                .orElseThrow { BookException("Order type not found") }
         }
 
         fun getCallTypeByEnum(type: OrderTypeEnum): OrderTypeEnum {
             return Arrays.stream(OrderTypeEnum.values())
                 .filter { t -> t.equals(type) }
                 .findFirst()
-                .orElseThrow { BookException("Call Type not found") }
+                .orElseThrow { BookException("Order type not found") }
         }
     }
 }

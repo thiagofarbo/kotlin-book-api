@@ -1,5 +1,7 @@
 package br.com.book.api.domain
 
+import lombok.AllArgsConstructor
+import lombok.NoArgsConstructor
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
 import java.io.Serializable
@@ -16,9 +18,10 @@ data class Coupon (@Id
                    val code: String,
                    val discount: BigDecimal,
                    val description: String,
-                   val expiry_date: LocalDateTime,
+                   val expiryDate: LocalDateTime,
                    val active: Boolean,
                    ): Serializable {
+
     constructor() : this(0L, "", BigDecimal.ZERO, "",LocalDateTime.now(),false)
 
     override fun toString(): String {

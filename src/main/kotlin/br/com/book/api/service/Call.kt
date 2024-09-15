@@ -6,6 +6,7 @@ import br.com.book.api.domain.order.OrderRequest
 import br.com.book.api.domain.order.OrderResponse
 import br.com.book.api.service.coupon.CouponService
 import br.com.book.api.service.message.KafkaProducerService
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -18,7 +19,11 @@ class Call (
 
     private val kafkaService: KafkaProducerService,
 
+
     ): CallStrategy{
+
+    @Value("\${topic.book.producer}")
+    private lateinit var topic : String
 
     lateinit var order: OrderResponse
 
@@ -40,7 +45,7 @@ class Call (
 
             order = OrderResponse(rentBook.id, callType, rentBook.book, rentBook.customer, rentBook.orderDate, returnDate, orderRequest.quantity, price)
 
-            kafkaService.sendToKafkaJson(order)
+            kafkaService.sendToKafkaJson(topic, order)
 
         }else if (callType == OrderTypeEnum.PURCHASE){
 
@@ -50,7 +55,7 @@ class Call (
 
             order = OrderResponse(bookPurchased.id, callType, bookPurchased.book, bookPurchased.customer, bookPurchased.orderDate, null, orderRequest.quantity, price)
 
-            kafkaService.sendToKafkaJson(order)
+            kafkaService.sendToKafkaJson(topic, order)
         }
          return order
     }

@@ -16,9 +16,9 @@ import javax.persistence.*
 data class Warehouse (@Id
                       @GeneratedValue(strategy =  GenerationType.IDENTITY)
                       @SequenceGenerator(name = "gen_" + "book", sequenceName = "sq_" + "warehouse", allocationSize = 1)
-    val book_id: Long,
-    val in_stock: Boolean,
-    var quantity_in_stock: Int,
+    val bookId: Long,
+    val inStock: Boolean,
+    var quantityInStock: Int,
     val title: String,
     val author: String,
     val isbn: String,
@@ -30,8 +30,8 @@ data class Warehouse (@Id
     val price: BigDecimal,
     val synopsis: String,
     var available: Boolean,
-    val created_at: LocalDateTime,
-    val updated_at:  LocalDateTime
+    val createdAt: LocalDateTime,
+    val updatedAt:  LocalDateTime
 ): Serializable {
     constructor() : this(0L, false,0,"", "","",0,
         "",0,  "", "", BigDecimal.ZERO, "", false, LocalDateTime.now(), LocalDateTime.now()

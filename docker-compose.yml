@@ -49,6 +49,16 @@ services:
     volumes:
       - redis_data:/data
 
+  mongodb:
+    image: mongo
+    container_name: mongodb-book
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+
   zookeeper:
     image: wurstmeister/zookeeper
     container_name: zookeeper
@@ -98,6 +108,7 @@ volumes:
   data:
     external: false
   redis_data:
+  mongodb_data:
 networks:
   book-net:
     driver: bridge

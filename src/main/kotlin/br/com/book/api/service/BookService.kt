@@ -15,6 +15,8 @@ interface BookService{
 
     fun findBookByIsbn(isbn: String): Book
 
+    fun findBookById(id: Long): Book
+
     fun update(book: Book, id: Long): Book
 
      fun listByTitle(title: String): Book

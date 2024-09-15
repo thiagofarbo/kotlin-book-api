@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service
 @Service
 class KafkaProducerService(val messageConfig : MessageConfig)  {
 
-    @Value("\${topic.name.producer}")
-    private lateinit var topic : String
+//    @Value("\${topic.book.producer}")
+//    private lateinit var topic : String
 
     @Autowired
     private lateinit var kafkaTemplate : KafkaTemplate<String, String>
-    fun sendToKafkaJson(order : OrderResponse) {
-        kafkaTemplate.send(topic, order.toString())
+        fun <T> sendToKafkaJson(topic: String, order: T) {
+            kafkaTemplate.send(topic, order.toString())
     }
 }

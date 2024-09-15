@@ -3,6 +3,7 @@ package br.com.book.api.service.message
 import br.com.book.api.configs.MessageConfig
 import br.com.book.api.domain.order.OrderResponse
 import br.com.book.api.service.WarehouseService
+import br.com.book.api.service.shipment.ShippingService
 import br.com.book.api.util.JsonUtil
 import kotlinx.coroutines.runBlocking
 import lombok.RequiredArgsConstructor
@@ -19,28 +20,25 @@ import java.util.*
 @Slf4j
 @Service
 @RequiredArgsConstructor
-class KafkaConsumerService ( private val warehouseService: WarehouseService){
+class KafkaConsumerService ( private val warehouseService: WarehouseService,  private val shippingService: ShippingService){
 
     companion object {
         val logger = LoggerFactory.getLogger(KafkaConsumerService::class.java)
     }
 
-    @Value("\${topic.name.consumer}")
+    @Value("\${topic.book.consumer}")
     private lateinit var topic : String
 
-    @Value("\${topic.name.groupId}")
-    private lateinit var idGroup : String
-
-    @Value("\${topic.name.producer}")
-    private lateinit var producer : String
+    @Value("\${topic.shipping-event.producer}")
+    private lateinit var topicOrderEvent : String
 
     val jsonUtil = JsonUtil()
 
-    @KafkaListener(topics = ["\${topic.name.consumer}"], groupId = "\${topic.name.groupId}")
+    @KafkaListener(topics = ["\${topic.book.consumer}"], groupId = "\${topic.book.groupId}")
     fun consume(payload: ConsumerRecord<String?, String?>) = runBlocking{
         val configuration = MessageConfig.consumerConfiguration()
 
-        KafkaConsumer<Any?, Any?>(configuration).use { consumer ->
+            KafkaConsumer<Any?, Any?>(configuration).use { consumer ->
             consumer.subscribe(Arrays.asList(topic))
             logger.info("key: {} " , payload.key())
             logger.info("Headers: {} ", payload.headers())
@@ -53,7 +51,9 @@ class KafkaConsumerService ( private val warehouseService: WarehouseService){
 
      suspend fun updateStock(order : OrderResponse) {
         val warehouseValue = warehouseService.findBookByIsbn(order.book.isbn)
-        warehouseValue.quantity_in_stock -= order.quantity!!
+        warehouseValue.quantityInStock -= order.quantity!!
         warehouseService.save(warehouseValue)
+
+         order.orderId?.let { shippingService.confirmOrder(it) }
     }
 }

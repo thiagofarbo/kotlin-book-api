@@ -47,6 +47,10 @@ class BookServiceImpl (
         return bookRepository.findBookByIsbn(isbn).orElseThrow { BookException("Book not found.") }
     }
 
+    override fun findBookById(id: Long): Book {
+        return bookRepository.findById(id).get()
+    }
+
     override fun update(book: Book, id: Long): Book {
         TODO("Not yet implemented")
     }
