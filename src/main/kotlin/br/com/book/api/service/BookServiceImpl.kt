@@ -2,11 +2,13 @@ package br.com.book.api.service
 
 import br.com.book.api.domain.Book
 import br.com.book.api.domain.Order
+import br.com.book.api.domain.Warehouse
 import br.com.book.api.domain.enums.OrderTypeEnum
 import br.com.book.api.domain.enums.StatusEnum
 import br.com.book.api.domain.payment.PaymentRequest
 import br.com.book.api.exception.BookException
 import br.com.book.api.exception.OrderException
+import br.com.book.api.exception.WareHouseException
 import br.com.book.api.repository.BookRepository
 import br.com.book.api.repository.CustomerRepository
 import br.com.book.api.repository.OrderRepository
@@ -38,19 +40,16 @@ class BookServiceImpl (
 
     private val  paymentService: MakePaymentService,
 
-    private val kafkaProducerService: KafkaProducerService
+    private val warehouseService: WarehouseService
 
 ): BookService{
-
-    @Value("\${topic.book.producer}")
-    private lateinit var topic : String
 
     override fun save(book: Book): Book {
         return bookRepository.save(book)
     }
 
-    override fun list(isbn: String?, name: String?, pageRquest: Pageable): Page<Book> {
-        return bookRepository.findAllByIsbnOrTitle(isbn, name, pageRquest)
+    override fun list(isbn: String?, title: String?, pageRquest: Pageable): Page<Book> {
+        return bookRepository.findAllByIsbnOrTitle(isbn, title, pageRquest)
     }
 
     override fun findBookByIsbn(isbn: String): Book {
@@ -124,7 +123,10 @@ class BookServiceImpl (
 
         lateinit var orderDone: Order
 
-        val customer = customerRepository.findCustomerByCpf(cpf).orElseThrow( { BookException("User not found.") } )
+        val customer = customerRepository.findCustomerByCpf(cpf).orElseThrow { BookException("User not found.") }
+
+        val wareHouseBook = warehouseService.findBookByIsbn(isbn)
+        validateQuantityToBePurchased(wareHouseBook, quantity)
 
         val book = bookRepository.findBookByIsbn(isbn).orElseThrow { BookException("Book not found.") }
 
@@ -138,5 +140,11 @@ class BookServiceImpl (
             orderDone = orderRepository.save(order)
         }
         return orderDone
+    }
+
+    fun validateQuantityToBePurchased(wareHouseBook: Warehouse, quantity: Int){
+        if (wareHouseBook.quantityInStock < quantity){
+            throw WareHouseException("The quantity to be purchased is greater than what we have in stock.", quantity)
+        }
     }
 }

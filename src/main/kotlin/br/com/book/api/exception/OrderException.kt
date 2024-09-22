@@ -2,7 +2,7 @@ package br.com.book.api.exception
 
 class OrderException: RuntimeException {
 
-    constructor(mensagem: String) : super(mensagem)
+    constructor(message: String) : super(message)
 
-    constructor(mensagem: String, bookId: String) : super(bookId)
+    constructor(message: String, bookId: String) : super(bookId)
 }

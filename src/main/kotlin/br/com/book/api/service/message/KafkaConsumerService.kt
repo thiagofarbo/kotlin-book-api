@@ -48,6 +48,12 @@ class KafkaConsumerService ( private val warehouseService: WarehouseService,  pr
 
      suspend fun updateStock(order : OrderResponse) {
         val warehouseValue = warehouseService.findBookByIsbn(order.book.isbn)
+
+         if(warehouseValue.quantityInStock < order.quantity!!){
+
+         }
+
+
         warehouseValue.quantityInStock -= order.quantity!!
         warehouseService.save(warehouseValue)
 

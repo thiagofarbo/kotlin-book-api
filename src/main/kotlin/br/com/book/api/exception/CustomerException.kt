@@ -2,7 +2,7 @@ package br.com.book.api.exception
 
 class CustomerException: RuntimeException {
 
-    constructor(mensagem: String) : super(mensagem)
+    constructor(message: String) : super(message)
 
-    constructor(mensagem: String, cpf: String) : super(cpf)
+    constructor(message: String, cpf: String) : super(cpf)
 }
