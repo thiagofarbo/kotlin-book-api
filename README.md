@@ -5,7 +5,8 @@
 
 
 # Design Systems 
-![system-book-design drawio (1)](https://github.com/user-attachments/assets/034ffed0-517f-4b2a-86f1-622e51b609fb)
+![system-book-design drawio (2)](https://github.com/user-attachments/assets/8ecee9e7-f50f-4295-ac15-a281bdeb14df)
+
 
 
 
