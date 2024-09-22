@@ -51,11 +51,14 @@ class Call (
 
             val price = couponService.calculateOrderPrice(orderRequest.price, orderRequest.quantity, orderRequest.voucherCode)
 
-            val bookPurchased = bookService.purchase(orderRequest.isbn, orderRequest.cpf, orderRequest.quantity, price)
+            val bookPurchased = bookService.purchase(orderRequest.isbn, orderRequest.cpf, orderRequest.quantity, price, orderRequest.isVirtualBook)
 
             order = OrderResponse(bookPurchased.id, callType, bookPurchased.book, bookPurchased.customer, bookPurchased.orderDate, null, orderRequest.quantity, price)
 
-            kafkaService.sendToKafkaJson(topic, order)
+            //Don't update warehouse due to the book being virtual.
+            if(!orderRequest.isVirtualBook){
+                kafkaService.sendToKafkaJson(topic, order)
+            }
         }
          return order
     }

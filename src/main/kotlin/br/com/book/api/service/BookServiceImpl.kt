@@ -11,13 +11,17 @@ import br.com.book.api.repository.BookRepository
 import br.com.book.api.repository.CustomerRepository
 import br.com.book.api.repository.OrderRepository
 import br.com.book.api.repository.RedisRepository
-import br.com.book.api.service.coupon.CouponService
+import br.com.book.api.service.message.KafkaProducerService
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.time.LocalDate
 import java.util.*
+
 
 @Service
 class BookServiceImpl (
@@ -32,9 +36,15 @@ class BookServiceImpl (
 
     private val redisRepository: RedisRepository,
 
-    private val  paymentService: MakePaymentService
+    private val  paymentService: MakePaymentService,
+
+    private val kafkaProducerService: KafkaProducerService
 
 ): BookService{
+
+    @Value("\${topic.book.producer}")
+    private lateinit var topic : String
+
     override fun save(book: Book): Book {
         return bookRepository.save(book)
     }
@@ -110,17 +120,23 @@ class BookServiceImpl (
         return orderRepository.findAllByCpf(cpf)
     }
 
-    override fun purchase(isbn: String, cpf: String, quantity: Int, orderPrice: BigDecimal): Order {
+    override fun purchase(isbn: String, cpf: String, quantity: Int, orderPrice: BigDecimal, isVirtualBook: Boolean): Order {
+
+        lateinit var orderDone: Order
 
         val customer = customerRepository.findCustomerByCpf(cpf).orElseThrow( { BookException("User not found.") } )
 
-        val book = bookRepository.findBookByIsbn(isbn).orElseThrow( { BookException("Book not found.") } )
+        val book = bookRepository.findBookByIsbn(isbn).orElseThrow { BookException("Book not found.") }
 
         val order = Order(orderService.getOrderNumber(), book, customer, LocalDate.now(), null, null, cpf, OrderTypeEnum.PURCHASE.name, quantity, orderPrice)
 
-        val orderDone = orderRepository.save(order)
+        val price = book.price.setScale(0, RoundingMode.HALF_UP)
+        val paymentRequest = PaymentRequest("USD", price.longValueExact(), "AV TEST" )
+        val paymentResponse = paymentService.makePayment(paymentRequest)
 
+        if (paymentResponse.statusCode == HttpStatus.OK.value()) {
+            orderDone = orderRepository.save(order)
+        }
         return orderDone
     }
-
 }

@@ -1,10 +1,7 @@
 package br.com.book.api.domain
 
-import lombok.AllArgsConstructor
-import lombok.NoArgsConstructor
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
-import org.springframework.data.redis.core.RedisHash
 import java.io.Serializable
 import java.math.BigDecimal
 import javax.persistence.*

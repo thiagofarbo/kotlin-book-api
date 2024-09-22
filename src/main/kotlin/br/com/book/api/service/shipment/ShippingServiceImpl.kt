@@ -17,28 +17,28 @@ class ShippingServiceImpl(private val shippingEventRepository: ShippingEventRepo
 
     @Transactional
     override fun confirmOrder(orderId: String): String {
-        val event =  ShippingEvent("", orderId, OrderStatusEvent.CONFIRMED, "Order confirmed successfully", LocalDateTime.now())
+        val event =  ShippingEvent(orderId, OrderStatusEvent.CONFIRMED, "Order confirmed successfully", LocalDateTime.now())
         saveAndPublish(event)
         return OrderStatusEvent.CONFIRMED.description
     }
 
     @Transactional
     override fun shipOrder(orderId: String): String {
-        val event =  ShippingEvent("", orderId, OrderStatusEvent.SHIPPED, "Order Shipped successfully", LocalDateTime.now())
+        val event =  ShippingEvent(orderId, OrderStatusEvent.SHIPPED, "Order Shipped successfully", LocalDateTime.now())
         saveAndPublish(event)
         return OrderStatusEvent.SHIPPED.description
     }
 
     @Transactional
     override fun deliveryOrder(orderId: String): String {
-        val event =  ShippingEvent("", orderId, OrderStatusEvent.SHIPPED, "Order delivered successfully", LocalDateTime.now())
+        val event =  ShippingEvent(orderId, OrderStatusEvent.DELIVERED, "Order delivered successfully", LocalDateTime.now())
         saveAndPublish(event)
         return OrderStatusEvent.DELIVERED.description
     }
 
     @Transactional
     override fun cancelOrder(orderId: String): String {
-        val event =  ShippingEvent("", orderId, OrderStatusEvent.CANCELED, "Order canceled successfully", LocalDateTime.now())
+        val event =  ShippingEvent(orderId, OrderStatusEvent.CANCELED, "Order canceled successfully", LocalDateTime.now())
         saveAndPublish(event)
         return OrderStatusEvent.CANCELED.description
     }

@@ -11,7 +11,7 @@ class EmailService(
     private val mailSender: JavaMailSender,
     private val templateEngine: TemplateEngine
 ) {
-
+    //mailtrap.io
     fun send(to: String, subject: String, templateName: String, variables: Map<String, Any>) {
         val context = Context()
         context.setVariables(variables)

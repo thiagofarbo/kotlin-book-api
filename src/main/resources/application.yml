@@ -1,4 +1,13 @@
 spring:
+  application:
+    name: book-api
+  eureka:
+    client:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+    instance:
+      preferIpAddress: true
   restTemplate:
     # Configuration global de timeout
     read-timeout: 9000
@@ -28,7 +37,7 @@ redis:
     maxActive: -1 # no limit to the number of active connections
     maxWait: 30000 # time limit to get a connection - only applies if maxActive is finite
 
-# Flyway Configuration
+  # Flyway Configuration
   flyway:
     enabled: true
     baselineOnMigrate: true
@@ -43,9 +52,10 @@ management:
         include: "*"
   endpoint:
     prometheus:
-        enabled: true
+      enabled: true
     metrics:
-        enabled: true
+      enabled: true
+
 bootstrap:
   servers: localhost:9092
 
@@ -55,8 +65,8 @@ mongodb:
   database: shipping-event
 
 kafka:
-#  bootstrap:
-#  servers: localhost:9092   # Kafka broker addresses
+  #  bootstrap:
+  #  servers: localhost:9092   # Kafka broker addresses
   # Producer settings (for sending events)
   producer:
     key-serializer: org.apache.kafka.common.serialization.StringSerializer    # Serializer for the key
@@ -68,7 +78,7 @@ kafka:
     buffer-memory: 33554432 # Buffer size in memory
     # Consumer settings (for consume events)
   consumer:
-    group-id: shipping-event    # Group ID for the consumer
+    group-id: book    # Group ID for the consumer
     key-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Deserializer for the key
     value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer  # Wraps JsonDeserializer for error handling
     properties:
@@ -80,6 +90,10 @@ topic:
     consumer: book
     producer: book
     groupId: group_id
+  virtual-book:
+    consumer: payment
+    producer: payment
+    groupId: payment
   shipping-event:
     consumer: shipping-event
     producer: shipping-event

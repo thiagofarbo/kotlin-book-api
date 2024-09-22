@@ -51,8 +51,8 @@ class BookController(
     }
 
     @PostMapping("/{isbn}/rents")
-    fun rent(@PathVariable isbn: String, @RequestParam cpf:String,@RequestParam quantity: Int, @RequestParam voucherCode: String, @RequestParam price: BigDecimal, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) returnDate:LocalDate?): ResponseEntity<OrderResponse> {
-        val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.RENT, quantity, returnDate, voucherCode, price)
+    fun rent(@PathVariable isbn: String, @RequestParam cpf:String,@RequestParam quantity: Int, @RequestParam voucherCode: String, @RequestParam price: BigDecimal, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) returnDate:LocalDate?, @RequestParam isVirtualBook: Boolean): ResponseEntity<OrderResponse> {
+        val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.RENT, quantity, returnDate, voucherCode, price,isVirtualBook)
         return ResponseEntity.ok(callService.createOrder(orderRequest))
     }
 
@@ -63,8 +63,8 @@ class BookController(
     }
 
     @PostMapping("/{isbn}/purchase")
-        fun purchase(@PathVariable isbn: String, @RequestParam cpf:String, @RequestParam quantity: Int, @RequestParam voucherCode: String, @RequestParam price: BigDecimal): ResponseEntity<OrderResponse> {
-        val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.PURCHASE, quantity, null, voucherCode, price)
+        fun purchase(@PathVariable isbn: String, @RequestParam cpf:String, @RequestParam quantity: Int, @RequestParam voucherCode: String, @RequestParam price: BigDecimal, @RequestParam isVirtualBook: Boolean): ResponseEntity<OrderResponse> {
+        val orderRequest = OrderRequest(isbn, cpf, OrderTypeEnum.PURCHASE, quantity, null, voucherCode, price, isVirtualBook)
         return ResponseEntity.ok(callService.createOrder(orderRequest))
     }
 }

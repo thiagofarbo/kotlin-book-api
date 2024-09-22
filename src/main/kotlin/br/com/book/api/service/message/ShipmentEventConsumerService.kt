@@ -1,7 +1,6 @@
 package br.com.book.api.service.message
 
 import br.com.book.api.configs.MessageConfig
-import br.com.book.api.domain.Order
 import br.com.book.api.domain.order.ShippingEvent
 import br.com.book.api.service.BookService
 import br.com.book.api.service.EmailService
@@ -62,6 +61,6 @@ class ShipmentEventConsumerService (private val emailService: EmailService,
          val customer = customerService.getCustomerByCpf(order.cpf)
 
          val variables = mapOf("name" to customer.name, "bookName" to book.title)
-         emailService.send(customer.email, "Status Entrega", "email-template", variables)
+         emailService.send(customer.email, "Delivery status", "email-template", variables)
     }
 }

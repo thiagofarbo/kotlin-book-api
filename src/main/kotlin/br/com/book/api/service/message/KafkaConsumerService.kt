@@ -29,9 +29,6 @@ class KafkaConsumerService ( private val warehouseService: WarehouseService,  pr
     @Value("\${topic.book.consumer}")
     private lateinit var topic : String
 
-    @Value("\${topic.shipping-event.producer}")
-    private lateinit var topicOrderEvent : String
-
     val jsonUtil = JsonUtil()
 
     @KafkaListener(topics = ["\${topic.book.consumer}"], groupId = "\${topic.book.groupId}")
